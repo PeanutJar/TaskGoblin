@@ -1,0 +1,29 @@
+{
+  "name": "Task Goblin",
+  "description": "Task & Distraction Management Extension",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": [
+        "storage"
+    ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "Goblinface.png"
+  },
+  "icons": {
+    "16": "icons/Goblinface.png",
+    "32": "icons/Goblinface.png",
+    "48": "icons/Goblinface.png",
+    "128": "icons/Goblinface.png"
+  },
+  "content_scripts": [
+    {
+      "js": ["scripts/popupscript.js"],
+      "matches": [
+        "*://*/*"
+      ]
+      
+    }
+  ] 
+}
+
