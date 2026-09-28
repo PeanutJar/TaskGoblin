@@ -33,3 +33,15 @@ Added cross-browser extension popup that features basic task creation entry fiel
 - added task deletion and completion buttons elements that currently have no function
 
 Extension currently only runs locally through browser's developer mode
+
+\
+_9/27/26:_
+
+Completed Core functionality of task creation and management
+- Added functionality to 'task completion status' button
+  - If task is currently incomplete, pressing button sets to complete - and vice versa
+- Added functionality to 'delete task' button
+- Added 'due date' option on tasks
+- Added 'edit task' button
+  - When pressed, allows the user to edit the name of the selected task and add a due date to task
+  - When pressed, creates a 'save changes' and 'cancel changes' button
