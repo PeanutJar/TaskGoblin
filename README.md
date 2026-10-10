@@ -45,3 +45,26 @@ Completed Core functionality of task creation and management
 - Added 'edit task' button
   - When pressed, allows the user to edit the name of the selected task and add a due date to task
   - When pressed, creates a 'save changes' and 'cancel changes' button
+
+\
+_10/9/26:_
+
+Created settings menu that includes intervention intensity and distraction site features
+- Added input that allows user to select between a "General Ruleset" and an "Individual Ruleset"
+  - General Ruleset: applies selected intensity level to all defined distraction sites
+  - Individual Ruleset: each selected distraction site can apply their own intensity level
+- Added input that allows user to select between 4 intervention levels
+  - Gentle Reminder: "Display a small reminder when opening a distracting website."
+  - Pause and Reflect: "Ask whether the visit is intentional before continuing."
+  - Forced Break: "Continuation of level 2 and creates a short waiting period before allowing the user to continue after a certain period of time has passed."
+  - Block Access: Restrict access to site.
+  - _(Description of intervention levels can be find when hovering over highlighted names)_
+  - This section is only visible when the general ruleset is applied
+- Added distraction site creation, display, and removal of individual sites
+  - Distraction sites are added via a provided URL to said site
+
+_All features listed above do not currently have actual functionality beyond what has already been described_
+\
+Added a "save changes" button
+\
+Added gear icon in popup page to go to settings menu and added a green x that sends user back to main popup page
