@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Settings</title>
+    <link rel="stylesheet" href="settingsstyle.css">
+  </head>
+  <body>
+    <div id="topbar">
+      <img src="icons/x-mark.png">
+      <form action="popup.html">
+        <input type="submit" value="">
+      </form>
+    </div>
+
+    <h1 style="margin-top: 0; margin-bottom: 10px;">Settings</h1>
+
+    <label for="enablegeneralintensity">Enable General Intensity Rulesset or Individual Intensity Ruleset</label>
+    <div id="enablegeneralintensity">
+        <input type="radio" id="generalrules" name="ruleset" value="general" checked>
+        <label for="generalrules">General Ruleset</label>
+        <input type="radio" id="individualrules" name="ruleset" value="individual">
+        <label for="individualrules">Individual Ruleset</label>
+    </div>
+
+<!--**NOTE** I want to create two settings, 1 general ruleset that applies to all distraction sites
+and another setting that allows for the individual/group assignment of intervention level to sites.
+--
+If the general ruleset is selevtedm, I want the following intensity ruleset selection to appear under it, 
+then the display and addition of distraction sites underneath that.
+--
+If the individual intensity ruleset is selected, then I want the distraction site display and creation to 
+follow underneath it. Each task can than be selcted (more than one can be selected because each one will have 
+a checkbox to select such) to then **reveal** a fixed bar at the top of the screen that will allow the user to 
+perform the following changes to all selected sites: change intesity level (either dropdown or radio inputs), 
+delete, and unselect all. (you don't have to select a site to make these changes, each option will still have 
+said input changes displayed to the side of each indexed site [listed site to the left and the respective inputs 
+on the right side])
+--
+the general ruleset should be **PRIORITY** to develop before the other ruleset **NOTE**-->
+    <div id="generalintensitysection">
+        <label for="intensitysetting" id="intensitysettinglabel" class="bolded sectionlabel">Intensity Levels</label>
+        <div id="intensitysetting">
+            <div id="input1" class="inputlevels">
+                <input type="radio" id="intensity1" name="intensitylevel" value="level1">
+                <label for="intensity1" class="intensityinputlabel">Level 1: 
+                    <span class="popupindicator">Gentle Reminder</span></label>
+                <div class="popupdefinition">Display a small reminder when opening a distracting website.</div>
+            </div>
+
+            <div id="input2" class="inputlevels">
+                <input type="radio" id="intensity2" name="intensitylevel" value="level2">
+                <label for="intensity2" class="intensityinputlabel">Level 2: 
+                    <span class="popupindicator">Pause and Reflect</span></label>
+                <div class="popupdefinition">Ask whether the visit is intentional before continuing.</div>
+            </div>
+
+            <div id="input3" class="inputlevels">
+                <input type="radio" id="intensity3" name="intensitylevel" value="level3">
+                <label for="intensity3" class="intensityinputlabel">Level 3: 
+                    <span class="popupindicator">Forced Break</span></label>
+                <div class="popupdefinition">Continuation of level 2 and creates a short waiting period before allowing the user to 
+                    continue after a certain period of time has passed.</div>
+            </div>
+
+            <div id="input4" class="inputlevels">
+                <input type="radio" id="intensity4" name="intensitylevel" value="level4">
+                <label for="intensity4" class="intensityinputlabel">Level 4: 
+                    <span class="popupindicator">Block Access</span></label>
+                <div class="popupdefinition">Restrict access to site.</div>
+            </div>
+            
+        </div>
+    </div>
+    <!-------->
+    <label for="distractionsites" id="distractionsiteslabel" class="bolded sectionlabel">Distraction Sites</label>
+    <div id="distractionsites">
+        <div>
+            <input type="text" id="sitetextinput" placeholder="Enter A Site URL...">
+            <button id="addsite">Add Site</button>
+        </div>
+        <ul id="sitedisplay"></ul>
+    </div>
+
+    <!-------->
+    <button id="savesettingsbuttons">Save Settings</button>
+    <p id="settingsstatus" role="status" aria-live="polite"></p>
+
+
+    <script src="./scripts/settingsscript.js"></script>
+  </body>
+</html>

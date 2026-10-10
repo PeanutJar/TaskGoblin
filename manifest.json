@@ -5,7 +5,11 @@
   "manifest_version": 3,
   "permissions": [
         "storage"
-    ],
+  ],
+  "options_ui": {
+    "page": "settings.html",
+    "open_in_tab": true
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": "Goblinface.png"

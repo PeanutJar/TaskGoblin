@@ -162,11 +162,11 @@ async function UpdateTask(taskId, type) {
     const task = tasks.find((task) => task.id == taskId);
 
     //if the task doesn't exist, stop
-    if (!task) {
+    if(!task) {
         return;
     }
 
-    if (type == "completestatus") {
+    if(type == "completestatus") {
 
         //toggle completion status
         task.completed = !task.completed;
@@ -181,7 +181,7 @@ async function UpdateTask(taskId, type) {
         //refresh the displayed tasks
         DisplayTasks(tasks);
     }
-    else if (type == "taskedit") {
+    else if(type == "taskedit") {
         //find the task element with the associated identifier
         const taskelement = TaskDisplay.querySelector(
             `.task[data-task-id="${taskId}"]`
@@ -205,7 +205,7 @@ async function UpdateTask(taskId, type) {
         duedateinput.type = "datetime-local";
 
         //if the task already has a due date, put that date into the input field
-        if (task.duedate) {
+        if(task.duedate) {
             duedateinput.value = FormatDateForInput(task.duedate);
         }
 
@@ -231,14 +231,14 @@ async function UpdateTask(taskId, type) {
             const newtitle = editinputfield.value.trim();
 
             //don't allow empty titles
-            if (newtitle === "") {
+            if(newtitle === "") {
                 return;
             }
 
             task.title = newtitle; //change task title
 
             //change task due date
-            if (duedateinput.value === "") {
+            if(duedateinput.value === "") {
                 task.duedate = null; //empty input means no due date
             }
             else {
@@ -289,7 +289,7 @@ async function RemoveTask(taskId) {
 function GetTimeRemaining(duedate) {
 
     //if there is no due date
-    if (!duedate) {
+    if(!duedate) {
         return "No deadline";
     }
 
@@ -301,7 +301,7 @@ function GetTimeRemaining(duedate) {
     const difference = deadline - currenttime; //calculate the difference between the deadline and current time
 
     //if the deadline has already passed
-    if (difference <= 0) {
+    if(difference <= 0) {
         return "OVERDUE";
     }
 
@@ -336,7 +336,7 @@ function UpdateCountdowns() {
         );
 
         //if the task doesn't exist, stop
-        if (!task) {
+        if(!task) {
             return;
         }
         countdown.textContent = GetTimeRemaining(task.duedate); //update the countdown

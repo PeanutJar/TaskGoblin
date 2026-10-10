@@ -4,6 +4,41 @@ body {
     font-family: Arial, sans-serif;
 }
 
+#topbar {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    width: 100%;
+    height: 24px;
+    top: 0;
+    left: 0;
+    /*background-color: blue;*/
+    form {
+        height: 100%; 
+        aspect-ratio: 1 / 1; /* set width and height aspect ratio to be the same -> set height then set width to new height */
+        background-color: transparent;
+        position: absolute;
+        input {
+            background-color: transparent;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    }
+    img {  
+        height: 100%; 
+        aspect-ratio: 1 / 1; /* set width and height aspect ratio to be the same -> set height then set width to new height */
+        object-fit: contain;
+        /*background-color: red;*/
+    }
+    form:hover {
+        background-color: rgba(24, 30, 66, 0.3);
+    }
+}
+
+/*////////////////////////////////////////////*/
 input {
     width: 100%;
     box-sizing: border-box;
