@@ -1,8 +1,9 @@
 const ExtensionAPI = typeof browser !== "undefined" ? browser : chrome;
 
-//keep these values synchronized with contentscript.js.
-const USAGE_TIME = 0.5 * 60;
-const COOLDOWN_TIME = 0.3 * 60;
+//keep these values synchronized with contentscript.js
+//time is counted in seconds
+const USAGE_TIME = 0.2 * 60; //usage time of 15 minutes - 900 seconds
+const COOLDOWN_TIME = 0.3 * 60; //cooldown time of 5 minutes - 300 secondsw
 
 const STORAGE_PREFIX = "taskgoblin_level3_";
 const ALARM_PREFIX = "taskgoblin_timer_";
@@ -69,6 +70,24 @@ async function GetSiteState(sitekey) {
     const result = await ExtensionAPI.storage.local.get(key);
 
     return result[key] ?? null;
+}
+
+async function HasOtherMatchingTabs(sitekey, currentTabId) {
+    const tabs = await ExtensionAPI.tabs.query({});
+
+    return tabs.some((tab) => {
+        //ignore the tab that requested the check.
+        if (tab.id === undefined || tab.id === currentTabId || !tab.url) {
+            return false;
+        }
+        try {
+            const hostname = new URL(tab.url).hostname;
+            return GetSiteKey(hostname, [sitekey]) === sitekey;
+        } 
+        catch {
+            return false;
+        }
+    });
 }
 
 //send the same state to all tabs. Each content script filters by sitekey.
@@ -218,7 +237,7 @@ async function SyncActiveSite() {
 }
 
 //handle requests from contentscript.js.
-async function HandleMessage(message) {
+async function HandleMessage(message, sender) {
     if (!message?.sitekey) {
         return null;
     }
@@ -226,7 +245,16 @@ async function HandleMessage(message) {
 
     if (message.type === "LEVEL3_GET_STATE") {
         await SyncActiveSite();
-        return await GetSiteState(sitekey);
+
+        const state = await GetSiteState(sitekey);
+        const hasothertabs = await HasOtherMatchingTabs(
+            sitekey,
+            sender?.tab?.id
+        );
+        return {
+            state,
+            hasothertabs
+        };
     }
 
     if (message.type === "LEVEL3_START_USAGE") {
@@ -263,7 +291,7 @@ ExtensionAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
             return;
         }
 
-        HandleMessage(message)
+        HandleMessage(message, sender)
             .then(sendResponse)
             .catch((error) => {
                 console.error("Task Goblin timer error:", error);

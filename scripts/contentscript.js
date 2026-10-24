@@ -168,6 +168,7 @@ function ShowLevel3(sitekey) {
     let timer = null;
     let currentphase = "confirm";
     let currentstate = null;
+    let forcedinitialconfirmation = false;
 
     function StopDisplayTimer() {
         if (timer !== null) {
@@ -209,13 +210,12 @@ function ShowLevel3(sitekey) {
 
         panel.append(
             CreateButton("Continue", async () => {
-                const state = await SendTimerMessage("LEVEL3_START_USAGE");
-
-                if (state) {
-                    RenderState(state);
+                forcedinitialconfirmation = false;
+                const response = await SendTimerMessage("LEVEL3_START_USAGE");
+                if (response) {
+                    RenderState(response);
                 }
             }),
-
             CreateButton("Go Back", () => {
                 RemoveIntervention();
                 history.back();
@@ -356,20 +356,51 @@ function ShowLevel3(sitekey) {
         }
     }
 
-    //receive shared state changes from the background script.
+    //queue broadcasts until we know whether another matching tab exists.
+    let initialloadcomplete = false;
+    let pendingstate = null;
+
     ExtensionAPI.runtime.onMessage.addListener((message) => {
-        if (message?.type === "LEVEL3_STATE" && message.sitekey === sitekey) {
-            RenderState(message.state);
+        if (message?.type !== "LEVEL3_STATE" || message.sitekey !== sitekey) {
+            return;
         }
+        if (!initialloadcomplete) {
+            pendingstate = message.state;
+            return;
+        }
+        //keep the initial Forced Break panel visible until the user chooses Continue or Go Back.
+        if (forcedinitialconfirmation) {
+            return;
+        }
+        RenderState(message.state);
     });
 
-    //ask the background script to restore the existing shared session.
-    SendTimerMessage("LEVEL3_GET_STATE").then((state) => {
-        //a broadcast may have arrived before this request completed.
-        if (currentstate === null) {
-            RenderState(state);
-        }
-    });
+    SendTimerMessage("LEVEL3_GET_STATE")
+        .then((response) => {
+            initialloadcomplete = true;
+            const state = pendingstate ?? response?.state ?? null;
+            const hasothertabs = response?.hasothertabs ?? false;
+
+            if (currentstate !== null) {
+                return;
+            }
+            //check if this is the only tab for this shared host. 
+            if (!hasothertabs) {
+                //show confirmation regardless of the saved timer state.
+                forcedinitialconfirmation = true;
+                StopDisplayTimer();
+                RemoveIntervention();
+                ShowConfirmation();
+            } else {
+                //another matching tab exists: use the shared state.
+                RenderState(state);
+            }
+        })
+        .catch((error) => {
+            console.error("Task Goblin could not load the Level 3 timer state:", error);
+            initialloadcomplete = true;
+            ShowConfirmation();
+        });
 }
 
 //find matching site(s) with shared hostsite(s) and group them based on host site
