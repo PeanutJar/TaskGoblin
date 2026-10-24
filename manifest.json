@@ -4,7 +4,10 @@
   "version": "1.0",
   "manifest_version": 3,
   "permissions": [
-        "storage"
+    "storage",
+    "webNavigation",
+    "tabs",
+    "alarms"
   ],
   "options_ui": {
     "page": "settings.html",
@@ -20,12 +23,14 @@
     "48": "icons/Goblinface.png",
     "128": "icons/Goblinface.png"
   },
+  "background": {
+    "service_worker": "scripts/backgroundscript.js"
+  },
   "content_scripts": [
     {
-      "js": ["scripts/popupscript.js"],
-      "matches": [
-        "*://*/*"
-      ]
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["scripts/contentscript.js"],
+      "run_at": "document_idle"
       
     }
   ] 
