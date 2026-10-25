@@ -70,6 +70,32 @@ async function LoadTasks() {
     DisplayTasks(tasks);
 }
 
+function CreateButtonInput(btntitle, btnparent, btnid, btnclass) {
+    const thisbutton = document.createElement('button');
+    thisbutton.textContent = btntitle; 
+
+    
+    Object.assign(thisbutton.style, {
+        height: "20px",
+        display: "inline-flex",
+        justifyContent: "center",
+        alignItems: "center"
+    });
+        
+
+    //just to make sure these have values
+    if(btnid && btnclass) {
+        thisbutton.dataset.taskId = btnid;
+        thisbutton.classList.add(btnclass);
+        btnparent.append(thisbutton);
+
+        return thisbutton; //only for use when changing completeness background color
+    }
+    else {
+        return thisbutton;
+    }
+}
+
 //display all tasks
 function DisplayTasks(tasks) {
     TaskDisplay.innerHTML = ""; //clear the current list
@@ -85,37 +111,25 @@ function DisplayTasks(tasks) {
     tasks.forEach((task) => {
 
         const taskelement = document.createElement("li");
-
         taskelement.classList.add("task");
         taskelement.dataset.taskId = task.id;
 
-        taskelement.innerHTML = `
-            <h3>${task.title}</h3>
-
-            <p class="duedate">
-            ${
-                task.duedate
-                ? `Due: ${new Date(task.duedate).toLocaleString()}`
-                : "No due date"
-            }
-            </p>
-
-            <p class="countdown" data-countdown-id="${task.id}">
-                ${GetTimeRemaining(task.duedate)}
-            </p>
-            
-            <button class="completedbutton" data-task-id="${task.id}">
-                ${task.completed ? "Set Incomplete" : "Set Complete"} 
-            </button>
-
-            <button class="editbutton" data-task-id="${task.id}">
-                Edit
-            </button>
-
-            <button class="removebutton" data-task-id="${task.id}">
-                Delete
-            </button>
-        `;
+        const tasktitle = document.createElement("h3");
+        tasktitle.textContent = task.title;
+        
+        const theduedate = document.createElement("p");
+        theduedate.classList.add("duedate");
+        theduedate.textContent = task.duedate ? `Due: ${new Date(task.duedate).toLocaleString()}` : "No due date";
+        
+        const thecountdown = document.createElement("p");
+        thecountdown.classList.add("countdown");
+        thecountdown.dataset.taskId = task.id;
+        thecountdown.textContent = GetTimeRemaining(task.duedate);
+        
+        taskelement.append(tasktitle);
+        taskelement.append(theduedate);
+        taskelement.append(thecountdown);
+        
         //"${task.completed ? "Undo" : "Complete"}" -> when pressed, if task is complete, button reads as "Incomplete"
         //else if task is not complete, read as "Complete" (if false -> complete, if true -> incomplete))
         //#if tasks still needs to be set to incomplete vs if tasks needs to be set as complete
@@ -126,6 +140,45 @@ function DisplayTasks(tasks) {
         //through ".dataset"
         //note that the following of the identifer is transformed into camelCase
         //so data-task-id needs to be referenced as ".dataset.taskId"
+
+        Object.assign(taskelement.style, {
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            padding: "3px",
+            border: "3px solid #354D14",
+            fontFamily: "Arial, sans-serif",
+            fontSize: "14px",
+            marginTop: "5px",
+            marginBottom: "10px",
+            marginLeft: "0"
+        });
+/////
+        Object.assign(tasktitle.style, {
+            marginBottom: "5px",
+            marginTop: "0",
+            marginLeft: "0",
+            fontSize: "24px"
+        });
+        Object.assign(theduedate.style, {
+            marginBottom: "5px",
+            marginTop: "0",
+            marginLeft: "0"
+        });
+        Object.assign(thecountdown.style, {
+            marginBottom: "5px",
+            marginTop: "0",
+            marginLeft: "0"
+        });
+
+        const completebutton = CreateButtonInput(task.completed ? "Task Completed" : "Task Incomplete", taskelement, task.id, "completedbutton")
+        completebutton.style.backgroundColor = task.completed ? "rgba(23, 153, 19, 0.8)" : "rgba(216, 15, 15, 0.8)"; //set the button's color based on completion status
+        //complete button
+        CreateButtonInput("Edit", taskelement, task.id, "editbutton")
+        //edit button
+        CreateButtonInput("Delete", taskelement, task.id, "removebutton")
+        //remove button
+
         TaskDisplay.appendChild(taskelement);
     });
     const CompleteButtons = TaskDisplay.querySelectorAll(".completedbutton");
@@ -175,6 +228,7 @@ async function UpdateTask(taskId, type) {
         await ExtensionAPI.storage.local.set({
             tasks: tasks
         });
+        
 
         CurrentTasks = tasks; //update the in-memory task list (so countdown is immediently displayed)
 
@@ -211,12 +265,10 @@ async function UpdateTask(taskId, type) {
 
         /////////////////////////////////////SAVE BUTTON
         //create save button
-        const savebutton = document.createElement("button");
-        savebutton.textContent = "Save";
+        const savebutton = CreateButtonInput("Save");
         
         ////////////////////////////////////////CANCEL BUTTON
-        const cancelbutton = document.createElement("button");
-        cancelbutton.textContent = "Cancel";
+        const cancelbutton =  CreateButtonInput("Cancel");
 
         ///////////////////////
         titleelement.replaceWith(editinputfield); //replace title with input field

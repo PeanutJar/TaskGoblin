@@ -12,14 +12,18 @@
       </form>
     </div>
 
-    <h1 style="margin-top: 0; margin-bottom: 10px;">Settings</h1>
+    <h1 style="margin-top: 0; margin-bottom: 10px;" class="bolded">Settings</h1>
 
-    <label for="enablegeneralintensity">Enable General Intensity Rulesset or Individual Intensity Ruleset</label>
+    <label for="enablegeneralintensity">Enable General Intensity Ruleset or Individual Intensity Ruleset 
+        (Individual Ruleset Not Yet Implemented)
+    </label>
     <div id="enablegeneralintensity">
         <input type="radio" id="generalrules" name="ruleset" value="general" checked>
         <label for="generalrules">General Ruleset</label>
+        <!--**NOTE** TEMPORARILY DISBALED INDIVIDUAL RULESET
         <input type="radio" id="individualrules" name="ruleset" value="individual">
         <label for="individualrules">Individual Ruleset</label>
+        -->
     </div>
 
 <!--**NOTE** I want to create two settings, 1 general ruleset that applies to all distraction sites
@@ -78,6 +82,7 @@ the general ruleset should be **PRIORITY** to develop before the other ruleset *
             <input type="text" id="sitetextinput" placeholder="Enter A Site URL...">
             <button id="addsite">Add Site</button>
         </div>
+        <button type="button" class="collapsible">Show Listed Sites</button>
         <ul id="sitedisplay"></ul>
     </div>
 

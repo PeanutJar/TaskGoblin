@@ -2,7 +2,8 @@ const ExtensionAPI = typeof browser !== "undefined" ? browser : chrome;
 //ExtensionAPI is set to type of current browser API (if available), else, use chrome API
 
 const GeneralRules = document.getElementById("generalrules");
-const IndividualRules = document.getElementById("individualrules");
+//**NOTE** TEMPORARILY DISBALED INDIVIDUAL RULESET
+//const IndividualRules = document.getElementById("individualrules");
 
 const GeneralIntensitySection = document.getElementById("generalintensitysection");
 
@@ -37,7 +38,8 @@ async function LoadSettings() {
 
     //select the saved ruleset
     GeneralRules.checked = ruleset === "general";
-    IndividualRules.checked = ruleset === "individual";
+    //**NOTE** TEMPORARILY DISBALED INDIVIDUAL RULESET
+    //IndividualRules.checked = ruleset === "individual";
 
     //select the saved general intensity
     const intensityinput = document.querySelector(`input[name="intensitylevel"][value="${intensitylevel}"]`);
@@ -57,13 +59,16 @@ async function LoadSettings() {
 //RULESET DISPLAY
 ///////////////////////////////////////////////////////////
 GeneralRules.addEventListener("change", UpdateRulesetDisplay);
-IndividualRules.addEventListener("change", UpdateRulesetDisplay);
+//**NOTE** TEMPORARILY DISBALED INDIVIDUAL RULESET
+//IndividualRules.addEventListener("change", UpdateRulesetDisplay);
 
 function UpdateRulesetDisplay() {
 
     //the general intensity controls only apply when General Ruleset is selected.
     GeneralIntensitySection.hidden = !GeneralRules.checked;
 
+    //**NOTE** TEMPORARILY DISBALED INDIVIDUAL RULESET
+    /*
     //temp
     if(IndividualRules.checked) {
         SettingsStatus.textContent = "Individual Ruleset is not implemented yet. Your sites can still be managed.";
@@ -71,6 +76,7 @@ function UpdateRulesetDisplay() {
     else {
         SettingsStatus.textContent = "";
     }
+    */
 }
 
 ///////////////////////////////////////////////////////////
@@ -128,6 +134,22 @@ function AddSite() {
 ///////////////////////////////////////////////////////////
 //DISPLAY DISTRACTION SITES
 ///////////////////////////////////////////////////////////
+let collapsesites = document.getElementsByClassName("collapsible");
+let i;
+
+for (i = 0; i < collapsesites.length; i++) {
+  collapsesites[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if(content.style.display === "block") {
+      content.style.display = "none";
+    } 
+    else {
+      content.style.display = "block";
+    }
+  });
+}
+
 function DisplaySites() {
     SiteDisplay.innerHTML = "";
 

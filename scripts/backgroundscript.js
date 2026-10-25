@@ -2,8 +2,8 @@ const ExtensionAPI = typeof browser !== "undefined" ? browser : chrome;
 
 //keep these values synchronized with contentscript.js
 //time is counted in seconds
-const USAGE_TIME = 0.2 * 60; //usage time of 15 minutes - 900 seconds
-const COOLDOWN_TIME = 0.3 * 60; //cooldown time of 5 minutes - 300 secondsw
+const USAGE_TIME = 15 * 60; //usage time of 15 minutes - 900 seconds
+const COOLDOWN_TIME = 5 * 60; //cooldown time of 5 minutes - 300 secondsw
 
 const STORAGE_PREFIX = "taskgoblin_level3_";
 const ALARM_PREFIX = "taskgoblin_timer_";

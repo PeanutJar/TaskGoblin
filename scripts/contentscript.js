@@ -267,22 +267,6 @@ function ShowLevel3(sitekey) {
             true
         );
 
-        Object.assign(panel.style, {
-            top: "0",
-            left: "0",
-            right: "0",
-            bottom: "0",
-            width: "100%",
-            height: "100%",
-            borderRadius: "0",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            padding: "30px"
-        });
-
         const countdown = document.createElement("p");
         countdown.style.fontSize = "32px";
         countdown.style.fontWeight = "bold";
@@ -292,7 +276,6 @@ function ShowLevel3(sitekey) {
             if (currentphase !== "cooldown") {
                 return;
             }
-
             const remaining = typeof state.endsat === "number"
                 ? Math.max(0, Math.ceil((state.endsat - Date.now()) / 1000))
                 : 0;
@@ -422,23 +405,6 @@ function ShowLevel4() {
         true,
         true
     );
-
-    //cover the page so the user cannot interact with its content.
-    Object.assign(panel.style, {
-        top: "0",
-        left: "0",
-        right: "0",
-        bottom: "0",
-        width: "100%",
-        height: "100%",
-        borderRadius: "0",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        textAlign: "center",
-        padding: "30px"
-    });
 
     const message = panel.querySelector("p");
     message.style.maxWidth = "400px";
